@@ -1,0 +1,4 @@
+microservice-configserver-config:
+  environment:
+    SPRING_PROFILES_ACTIVE: prod
+    SPRING_APPLICATION_JSON: '{"spring": {"datasource": {"url": "jdbc:postgresql://postgres:5432/auto_tms_prod_db", "username": "prod_user", "password": "prod_password"}}}'

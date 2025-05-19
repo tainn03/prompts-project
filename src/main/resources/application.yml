@@ -1,0 +1,43 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: auto-tms
+  profiles:
+    active: dev # Default profile
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:auto_tms_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: "sa"
+    password: "sa2008"
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: auto-tms
+          jwk-set-uri: file:${spring.config.location:classpath:}/app.pub
+
+# JWT Configuration
+jwt:
+  expiration:
+    time: 86400 # 24 hours
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key
+logging:
+  level:
+    root: INFO
+    "[org.springframework.web]": DEBUG
+    "[org.hibernate.SQL]": DEBUG

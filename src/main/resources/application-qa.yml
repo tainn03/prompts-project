@@ -1,0 +1,38 @@
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auto_tms_qa_db
+    driver-class-name: org.postgresql.Driver
+    username: qa_user
+    password: qa_password
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 120000
+      connection-timeout: 30000
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: auto-tms
+          jwk-set-uri: file:${spring.config.location:classpath:}/app.pub
+
+# JWT Configuration
+jwt:
+  expiration:
+    time: 86400 # 24 hours
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+logging:
+  level:
+    root: INFO
+    "org.springframework.web": INFO
+    "org.hibernate.SQL": WARN

@@ -1,0 +1,4 @@
+microservice-configserver-config:
+  environment:
+    SPRING_PROFILES_ACTIVE: qa
+    SPRING_APPLICATION_JSON: '{"spring": {"datasource": {"url": "jdbc:postgresql://postgres:5432/auto_tms_qa_db", "username": "qa_user", "password": "qa_password"}}}'

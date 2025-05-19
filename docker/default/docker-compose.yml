@@ -1,0 +1,34 @@
+services:
+  mysql:
+    image: "mysql"
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auto-tms
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - auto-tms
+
+  auto-tms:
+    image: "tann0308/auto-tms:1.0.0"
+    container_name: auto-tms
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "auto-tms"
+      JWT_EXPIRATION_TIME: 86400
+    volumes:
+      - ./config/security:/app/config/security
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+networks:
+  auto-tms:
+    driver: "bridge"

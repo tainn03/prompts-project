@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    container_name: postgres-qa
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: auto_tms_qa_db
+      POSTGRES_USER: qa_user
+      POSTGRES_PASSWORD: qa_password
+    volumes:
+      - postgres-qa-data:/var/lib/postgresql/data
+    networks:
+      - auto-tms-qa
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qa_user -d auto_tms_qa_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auto-tms:
+    image: "tann0308/auto-tms:qa"
+    container_name: auto-tms-qa
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: qa
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auto_tms_qa_db
+      SPRING_DATASOURCE_USERNAME: qa_user
+      SPRING_DATASOURCE_PASSWORD: qa_password
+      JWT_EXPIRATION_TIME: 86400
+    volumes:
+      - ./config/security:/app/config/security
+    networks:
+      - auto-tms-qa
+
+networks:
+  auto-tms-qa:
+    driver: "bridge"
+
+volumes:
+  postgres-qa-data:
+    driver: local

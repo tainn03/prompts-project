@@ -1,0 +1,211 @@
+# GitHub Copilot Project Configuration
+
+## Workspace Hints
+language: java
+projectType: spring
+frameworkVersion: 3.4.5
+database: postgresql
+buildTool: maven
+javaVersion: 21
+
+## Entity Hints
+entities:
+  - name: User
+    table: up_users
+    fields:
+      - name: id
+        type: Integer
+      - name: username
+        type: String
+      - name: email
+        type: String
+      - name: emailVerified
+        type: Boolean
+      - name: phoneNumber
+        type: String
+      - name: provider
+        type: String
+      - name: password
+        type: String
+      - name: isAdmin
+        type: Boolean
+      - name: createdAt
+        type: LocalDateTime
+      - name: updatedAt
+        type: LocalDateTime
+
+  - name: UserDetail
+    table: user_details
+    fields:
+      - name: id
+        type: Integer
+      - name: firstName
+        type: String
+      - name: lastName
+        type: String
+      - name: dateOfBirth
+        type: LocalDateTime
+      - name: gender
+        type: Gender
+      - name: description
+        type: String
+      - name: createdAt
+        type: LocalDateTime
+      - name: updatedAt
+        type: LocalDateTime
+
+  - name: Vehicle
+    table: vehicles
+    fields:
+      - name: id
+        type: Integer
+      - name: organizationId
+        type: Integer
+      - name: registrationNumber
+        type: String
+      - name: model
+        type: String
+      - name: fuelType
+        type: VehicleFuelType
+      - name: vehicleTypeId
+        type: Integer
+      - name: ownerType
+        type: VehicleOwnerType
+      - name: isActive
+        type: Boolean
+      - name: createdAt
+        type: LocalDateTime
+      - name: updatedAt
+        type: LocalDateTime
+
+  - name: Route
+    table: routes
+    fields:
+      - name: id
+        type: Integer
+      - name: organizationId
+        type: Integer
+      - name: customerId
+        type: Integer
+      - name: type
+        type: RouteType
+      - name: code
+        type: String
+      - name: name
+        type: String
+      - name: description
+        type: String
+      - name: isActive
+        type: Boolean
+      - name: distance
+        type: Integer
+      - name: price
+        type: Integer
+      - name: createdAt
+        type: LocalDateTime
+      - name: updatedAt
+        type: LocalDateTime
+
+  - name: Order
+    table: orders
+    fields:
+      - name: id
+        type: Integer
+      - name: organizationId
+        type: Integer
+      - name: code
+        type: String
+      - name: type
+        type: OrderType
+      - name: status
+        type: OrderStatusType
+      - name: quantity
+        type: Float
+      - name: price
+        type: Float
+      - name: deliveryDate
+        type: LocalDateTime
+      - name: createdAt
+        type: LocalDateTime
+      - name: updatedAt
+        type: LocalDateTime
+
+  - name: OrderTrip
+    table: order_trips
+    fields:
+      - name: id
+        type: Integer
+      - name: organizationId
+        type: Integer
+      - name: status
+        type: OrderTripStatusType
+      - name: startedAt
+        type: LocalDateTime
+      - name: completedAt
+        type: LocalDateTime
+      - name: createdAt
+        type: LocalDateTime
+      - name: updatedAt
+        type: LocalDateTime
+
+## Enums
+enums:
+  - name: Gender
+    values: [MALE, FEMALE, UNKNOWN]
+  - name: VehicleFuelType
+    values: [GASOLINE, DIESEL, ELECTRIC, HYBRID, OTHER]
+  - name: VehicleOwnerType
+    values: [ORGANIZATION, SUBCONTRACTOR]
+  - name: RouteType
+    values: [FIXED, NON_FIXED]
+  - name: OrderType
+    values: [IMPORT, TRANSHIPMENT]
+  - name: OrderStatusType
+    values: [NEW, RECEIVED, IN_PROGRESS, COMPLETED, CANCELED]
+  - name: OrderTripStatusType
+    values:
+      [
+        NEW,
+        PENDING_CONFIRMATION,
+        CONFIRMED,
+        WAITING_FOR_PICKUP,
+        WAREHOUSE_GOING_TO_PICKUP,
+        WAREHOUSE_PICKED_UP,
+        WAITING_FOR_DELIVERY,
+        DELIVERED,
+        COMPLETED,
+        CANCELED,
+      ]
+
+## Relationships
+relationships:
+  - entity1: User
+    relation: one-to-one
+    entity2: UserDetail
+
+  - entity1: Route
+    relation: many-to-one
+    entity2: Customer
+
+  - entity1: Order
+    relation: many-to-one
+    entity2: Customer
+
+  - entity1: Order
+    relation: many-to-one
+    entity2: Route
+
+  - entity1: OrderTrip
+    relation: many-to-one
+    entity2: Order
+
+  - entity1: OrderTrip
+    relation: many-to-one
+    entity2: Vehicle
+
+  - entity1: OrderTrip
+    relation: many-to-one
+    entity2: User
+
+## API Endpoints
+apiPrefix: /api/v1

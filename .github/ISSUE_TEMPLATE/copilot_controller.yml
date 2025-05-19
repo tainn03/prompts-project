@@ -1,0 +1,45 @@
+name: Copilot Chat Controller Generation
+description: Generate a Spring REST controller for an entity
+title: "[COPILOT] Generate Controller"
+labels: ["copilot-generation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to request GitHub Copilot to generate a new controller
+  - type: input
+    id: entity-name
+    attributes:
+      label: Entity Name
+      description: What entity do you need a controller for?
+      placeholder: User
+    validations:
+      required: true
+  - type: textarea
+    id: fields
+    attributes:
+      label: Entity Fields
+      description: List the main fields of this entity (if not already defined in codebase)
+      placeholder: |
+        id: Long
+        name: String
+        email: String
+        role: Enum
+    validations:
+      required: false
+  - type: dropdown
+    id: features
+    attributes:
+      label: Required Features
+      description: Select the features you need in this controller
+      multiple: true
+      options:
+        - Standard CRUD operations
+        - Pagination
+        - Sorting
+        - Filtering
+        - Advanced search
+        - Batch operations
+        - File upload/download
+    validations:
+      required: true
